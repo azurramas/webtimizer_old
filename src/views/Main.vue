@@ -20,6 +20,14 @@ export default {
   components: {
     Upload, 
   },
+  mounted() {
+    this.test();
+  },
+  methods: {
+    test(){
+      
+    }
+  },
 
   data: () => ({})
 };
