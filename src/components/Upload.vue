@@ -10,7 +10,7 @@
       <div class="material-icons">cloud_upload</div>
       <p class="font-weight-light">Upload or drop images</p>
     </a>
-    <v-dialog v-model="error" persistent max-width="500">
+    <v-dialog v-model="error" style="background-color: #0c233e;" max-width="500">
       <NotImage @closeDialog="error = false" />
     </v-dialog>
   </v-col>
@@ -21,7 +21,8 @@ import NotImage from "./NotImage.vue";
 export default {
   data() {
     return {
-      error: false
+      error: false,
+      images: []
     };
   },
   components: {
@@ -35,7 +36,12 @@ export default {
         filters: [{ name: "Images", extensions: ["jpg", "png", "jpeg"] }],
         properties: ["multiSelections"]
       };
-      dialog.showOpenDialog(dialogOptions);
+
+      dialog.showOpenDialog(dialogOptions, files => {
+        let images = files.filter(image => !this.images.includes(image));
+        this.images = this.images.concat(images);
+        console.log(this.images);
+      });
     },
     dragdrop: function(e) {
       let files = e.dataTransfer.files;
@@ -47,13 +53,14 @@ export default {
           file.type === "image/png"
         ) {
           this.error = false;
+          if (!this.images.includes(file.path)) {
+            this.images.push(file.path);
+          }
+          console.log(this.images);
         } else {
           this.error = true;
         }
       });
-    },
-    updateError: function() {
-      this.error = false;
     }
   }
 };
@@ -78,8 +85,4 @@ export default {
   -moz-box-shadow: 0px 0px 15px 2px rgba(19, 59, 89, 1);
   box-shadow: 0px 0px 15px 2px rgba(19, 59, 89, 1);
 }
-
-/* .uploadFile:hover {
-  font-size: 110%;
-} */
 </style>
