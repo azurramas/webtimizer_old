@@ -1,27 +1,25 @@
 <template>
   <v-app>
-    <v-content >
+    <v-content>
       <Main />
     </v-content>
   </v-app>
 </template>
 
 <script>
-import Main from './views/Main.vue';
+import Main from "./views/Main.vue";
 
 export default {
-  name: 'App',
+  name: "App",
 
   components: {
-    Main,
+    Main
   },
 
   data: () => ({
     //
   }),
-   created () {
-      
-    },
+  created() {}
 };
 </script>
 

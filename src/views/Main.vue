@@ -5,28 +5,24 @@
         <h1 class="display-2 font-weight-bold mb-3">Welcome to Webtimizer</h1>
 
         <h2 class="subheading font-weight-light">Compress and optimize your images for web.</h2>
-
       </v-col>
 
       <Upload />
-
     </v-row>
   </v-container>
 </template>
 
 <script>
-import Upload from "../components/Upload"
+import Upload from "../components/Upload";
 export default {
   components: {
-    Upload, 
+    Upload
   },
   mounted() {
     this.test();
   },
   methods: {
-    test(){
-      
-    }
+    test() {}
   },
 
   data: () => ({})
