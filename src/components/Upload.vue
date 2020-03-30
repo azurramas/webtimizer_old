@@ -1,15 +1,16 @@
 <template>
   <v-col class="col-12 col-sm-10 col-md-8 col-lg-6">
-    <a
+    <div
       href="#"
-      @click="upload"
       @dragover.prevent
-      @drop="dragdrop"
+      @drop="upload"
       class="uploadFile d-flex flex-column align-center justify-center blue-grey--text text--lighten-4"
     >
+      <input type="file" name="myImage" accept="image/*" multiple @change="upload" />
+
       <div class="material-icons">cloud_upload</div>
       <p class="font-weight-light">Upload or drop images</p>
-    </a>
+    </div>
     <v-dialog v-model="error" style="background-color: #0c233e;" max-width="500">
       <NotImage @closeDialog="error = false" />
     </v-dialog>
@@ -29,22 +30,13 @@ export default {
     NotImage
   },
   methods: {
-    upload: function() {
-      const { remote } = require("electron");
-      const dialog = remote.dialog;
-      const dialogOptions = {
-        filters: [{ name: "Images", extensions: ["jpg", "png", "jpeg"] }],
-        properties: ["multiSelections"]
-      };
-
-      dialog.showOpenDialog(dialogOptions, files => {
-        let images = files.filter(image => !this.images.includes(image));
-        this.images = this.images.concat(images);
-        console.log(this.images);
-      });
-    },
-    dragdrop: function(e) {
-      let files = e.dataTransfer.files;
+    upload: function(e) {
+      e.preventDefault();
+      if (e.type === "change") {
+        var files = e.target.files;
+      } else {
+        files = e.dataTransfer.files;
+      }
 
       files.forEach(file => {
         if (
@@ -53,14 +45,14 @@ export default {
           file.type === "image/png"
         ) {
           this.error = false;
-          if (!this.images.includes(file.path)) {
-            this.images.push(file.path);
+          if (!this.images.some(item => item.path === file.path)) {
+            this.images.push(file);
           }
-          console.log(this.images);
         } else {
           this.error = true;
         }
       });
+      console.log(this.images);
     }
   }
 };
@@ -73,6 +65,15 @@ export default {
   background: #46596f;
   border-radius: 10px;
   transition: all 0.2s ease-in-out;
+  position: relative;
+}
+
+.uploadFile input {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  opacity: 0;
+  cursor: pointer;
 }
 
 .material-icons {
