@@ -6,23 +6,29 @@
 
         <h2 class="subheading font-weight-light">Compress and optimize your images for web.</h2>
       </v-col>
-
+    </v-row>
+    <v-row class="text-center justify-center">
       <Upload />
     </v-row>
+    
+      <Images />
+    
   </v-container>
 </template>
 
 <script>
 import Upload from "../components/Upload";
+import Images from "../components/Images";
 export default {
   components: {
-    Upload
+    Upload,
+    Images
   },
   mounted() {
-    this.test();
+   
   },
   methods: {
-    test() {}
+    
   },
 
   data: () => ({})

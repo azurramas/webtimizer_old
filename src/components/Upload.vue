@@ -22,8 +22,7 @@ import NotImage from "./NotImage.vue";
 export default {
   data() {
     return {
-      error: false,
-      images: []
+      error: false
     };
   },
   components: {
@@ -39,20 +38,16 @@ export default {
       }
 
       files.forEach(file => {
-        if (
-          file.type === "image/jpg" ||
-          file.type === "image/jpeg" ||
-          file.type === "image/png"
-        ) {
+        if (file.type.includes("image/")) {
           this.error = false;
-          if (!this.images.some(item => item.path === file.path)) {
-            this.images.push(file);
+          if (!this.$store.state.images.some(item => item.path === file.path)) {
+            this.$store.state.images.push(file);
           }
         } else {
           this.error = true;
         }
       });
-      console.log(this.images);
+      console.log(this.$store.state.images);
     }
   }
 };
@@ -61,7 +56,7 @@ export default {
 <style scoped>
 .uploadFile {
   text-decoration: none;
-  height: 15rem;
+  height: 10rem;
   background: #46596f;
   border-radius: 10px;
   transition: all 0.2s ease-in-out;
@@ -78,7 +73,7 @@ export default {
 
 .material-icons {
   transition: all 0.2s ease-in-out;
-  font-size: 12rem;
+  font-size: 8rem;
 }
 
 .uploadFile:hover {
