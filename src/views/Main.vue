@@ -10,9 +10,26 @@
     <v-row class="text-center justify-center">
       <Upload />
     </v-row>
-    
-      <Images />
-    
+
+    <Images />
+
+    <v-row class="text-center justify-center">
+      <v-col class="col-6 col-sm-4 col-md-2 ">
+        <v-btn
+          v-if="this.$store.state.images.length"
+          class="mt-4"
+          @click="clearImages"
+          color="error"
+        >Clear All</v-btn>
+      </v-col>
+      <v-col class="col-6 col-sm-4 col-md-2 ">
+        <v-btn
+          v-if="this.$store.state.images.length"
+          class="mt-4"
+          color="success"
+        >Compress!</v-btn>
+      </v-col>
+    </v-row>
   </v-container>
 </template>
 
@@ -24,11 +41,11 @@ export default {
     Upload,
     Images
   },
-  mounted() {
-   
-  },
+  mounted() {},
   methods: {
-    
+    clearImages: function(){
+      this.$store.state.images = [];
+    }
   },
 
   data: () => ({})

@@ -14,6 +14,7 @@
     <v-dialog v-model="error" style="background-color: #0c233e;" max-width="500">
       <NotImage @closeDialog="error = false" />
     </v-dialog>
+    
   </v-col>
 </template>
 
@@ -49,6 +50,7 @@ export default {
       });
       console.log(this.$store.state.images);
     }
+    
   }
 };
 </script>
