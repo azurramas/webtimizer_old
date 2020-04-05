@@ -11,24 +11,28 @@
       <Upload />
     </v-row>
 
-    <Images />
+    <Images class="transition" />
 
-    <v-row class="text-center justify-center">
-      <v-col class="col-6 col-sm-4 col-md-2 ">
-        <v-btn
-          v-if="this.$store.state.images.length"
-          class="mt-4"
-          @click="clearImages"
-          color="error"
-        >Clear All</v-btn>
+    <v-row v-if="this.$store.state.images.length" class="text-center transition justify-center">
+      <v-col class="col-6 col-sm-4 col-md-2">
+        <v-btn class="mt-4" @click="clearDialog = true" color="error">Clear All</v-btn>
       </v-col>
-      <v-col class="col-6 col-sm-4 col-md-2 ">
-        <v-btn
-          v-if="this.$store.state.images.length"
-          class="mt-4"
-          color="success"
-        >Compress!</v-btn>
+      <v-col class="col-6 col-sm-4 col-md-2">
+        <v-btn @click="compressDialog = true" class="mt-4" color="success">Compress!</v-btn>
       </v-col>
+
+      <v-dialog persistent v-model="clearDialog" style="background-color: #0c233e;" max-width="500">
+        <ClearDialog @closeDialog="clearDialog = false" @clearAll="clearImages" />
+      </v-dialog>
+
+      <v-dialog
+        persistent
+        v-model="compressDialog"
+        style="background-color: #ffff;"
+        max-width="800"
+      >
+        <Compress @closeDialog="compressDialog = false" />
+      </v-dialog>
     </v-row>
   </v-container>
 </template>
@@ -36,18 +40,34 @@
 <script>
 import Upload from "../components/Upload";
 import Images from "../components/Images";
+import ClearDialog from "../components/ClearDialog";
+import Compress from "../components/Compress";
+
 export default {
+  data() {
+    return {
+      clearDialog: false,
+      compressDialog: false
+    };
+  },
   components: {
     Upload,
-    Images
+    Images,
+    ClearDialog,
+    Compress
   },
   mounted() {},
   methods: {
-    clearImages: function(){
-      this.$store.state.images = [];
+    clearImages: function() {
+      this.$store.commit("clearAll");
+      this.clearDialog = false;
     }
-  },
-
-  data: () => ({})
+  }
 };
 </script>
+
+<style scoped>
+.transition {
+  transition: all 0.3s ease-in-out;
+}
+</style>

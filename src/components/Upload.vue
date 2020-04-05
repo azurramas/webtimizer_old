@@ -6,15 +6,21 @@
       @drop="upload"
       class="uploadFile d-flex flex-column align-center justify-center blue-grey--text text--lighten-4"
     >
-      <input type="file" name="myImage" accept="image/*" multiple @change="upload" />
+      <input
+        type="file"
+        @click="onInputClick"
+        name="myImage"
+        accept="image/*"
+        multiple
+        @change="upload"
+      />
 
       <div class="material-icons">cloud_upload</div>
       <p class="font-weight-light">Upload or drop images</p>
     </div>
-    <v-dialog v-model="error" style="background-color: #0c233e;" max-width="500">
-      <NotImage @closeDialog="error = false" />
+    <v-dialog v-model="getError" style="background-color: #0c233e;" max-width="500">
+      <NotImage @closeDialog="setError" />
     </v-dialog>
-    
   </v-col>
 </template>
 
@@ -22,9 +28,7 @@
 import NotImage from "./NotImage.vue";
 export default {
   data() {
-    return {
-      error: false
-    };
+    return {};
   },
   components: {
     NotImage
@@ -32,25 +36,28 @@ export default {
   methods: {
     upload: function(e) {
       e.preventDefault();
+
       if (e.type === "change") {
         var files = e.target.files;
       } else {
         files = e.dataTransfer.files;
       }
 
-      files.forEach(file => {
-        if (file.type.includes("image/")) {
-          this.error = false;
-          if (!this.$store.state.images.some(item => item.path === file.path)) {
-            this.$store.state.images.push(file);
-          }
-        } else {
-          this.error = true;
-        }
-      });
+      this.$store.dispatch("uploadImages", files);
+
       console.log(this.$store.state.images);
+    },
+    onInputClick: function(e) {
+      e.target.value = "";
+    },
+    setError() {
+      this.$store.commit("setError");
     }
-    
+  },
+  computed: {
+    getError() {
+      return this.$store.getters.getError;
+    }
   }
 };
 </script>

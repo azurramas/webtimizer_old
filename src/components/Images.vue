@@ -1,6 +1,6 @@
 <template>
   <v-row class="text-center justify-center">
-    <v-col class="col-md-2 col-sm-4 col-6" :key="image.name" v-for="image in this.$store.state.images">
+    <v-col class="col-md-2 col-sm-4 col-6" :key="image.name" v-for="image in images">
       <div class="hover">
         <v-img class="image" transition="fade-transition" height="8rem" :src="image.path"></v-img>
         <v-btn @click="deleteImage(image.path)" class="error" color="error" fab large dark>
@@ -8,7 +8,6 @@
         </v-btn>
       </div>
     </v-col>
-    
   </v-row>
 </template>
 
@@ -22,6 +21,11 @@ export default {
       this.$store.state.images = this.$store.state.images.filter(image => {
         return image.path !== path;
       });
+    }
+  },
+  computed: {
+    images() {
+      return this.$store.getters.getImages;
     }
   }
 };
