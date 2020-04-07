@@ -9,14 +9,7 @@
         <v-col class="col-11">
           <v-subheader>Compression ratio</v-subheader>
 
-          <v-slider
-            v-model="fruits"
-            :tick-labels="ticksLabels"
-            :max="4"
-            step="1"
-            ticks="always"
-            tick-size="3"
-          ></v-slider>
+          <v-slider :tick-labels="ticksLabels" :max="4" step="1" ticks="always" tick-size="3"></v-slider>
         </v-col>
       </v-row>
     </v-container>

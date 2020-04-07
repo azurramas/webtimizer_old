@@ -2,7 +2,13 @@
   <v-row class="text-center justify-center">
     <v-col class="col-md-2 col-sm-4 col-6" :key="image.name" v-for="image in images">
       <div class="hover">
-        <v-img class="image" transition="fade-transition" height="8rem" :src="image.path"></v-img>
+        <v-img class="image" transition="fade-transition" height="8rem" :src="image.min">
+          <template v-slot:placeholder>
+            <v-row class="fill-height ma-0" align="center" justify="center">
+              <v-progress-circular indeterminate color="white"></v-progress-circular>
+            </v-row>
+          </template>
+        </v-img>
         <v-btn @click="deleteImage(image.path)" class="error" color="error" fab large dark>
           <v-icon>mdi-delete</v-icon>
         </v-btn>

@@ -10,9 +10,6 @@
     <v-row class="text-center justify-center">
       <Upload />
     </v-row>
-
-    <Images class="transition" />
-
     <v-row v-if="this.$store.state.images.length" class="text-center transition justify-center">
       <v-col class="col-6 col-sm-4 col-md-2">
         <v-btn class="mt-4" @click="clearDialog = true" color="error">Clear All</v-btn>
@@ -20,20 +17,17 @@
       <v-col class="col-6 col-sm-4 col-md-2">
         <v-btn @click="compressDialog = true" class="mt-4" color="success">Compress!</v-btn>
       </v-col>
-
-      <v-dialog persistent v-model="clearDialog" style="background-color: #0c233e;" max-width="500">
-        <ClearDialog @closeDialog="clearDialog = false" @clearAll="clearImages" />
-      </v-dialog>
-
-      <v-dialog
-        persistent
-        v-model="compressDialog"
-        style="background-color: #ffff;"
-        max-width="800"
-      >
-        <Compress @closeDialog="compressDialog = false" />
-      </v-dialog>
     </v-row>
+    
+    <Images class="transition" />
+
+    <v-dialog persistent v-model="clearDialog" style="background-color: #0c233e;" max-width="500">
+      <ClearDialog @closeDialog="clearDialog = false" @clearAll="clearImages" />
+    </v-dialog>
+
+    <v-dialog persistent v-model="compressDialog" style="background-color: #ffff;" max-width="800">
+      <Compress @closeDialog="compressDialog = false" />
+    </v-dialog>
   </v-container>
 </template>
 
