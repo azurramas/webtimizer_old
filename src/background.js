@@ -24,7 +24,9 @@ function createWindow() {
     webPreferences: {
       nodeIntegration: true,
       webSecurity: false
-    }
+    },
+    backgroundColor: '#0c233e',
+    show: false
   });
 
   if (process.env.WEBPACK_DEV_SERVER_URL) {
@@ -36,6 +38,10 @@ function createWindow() {
     // Load the index.html when not in development
     win.loadURL("app://./index.html");
   }
+
+  win.once('ready-to-show', () => {
+    win.show()
+})
 
   win.on("closed", () => {
     win = null;

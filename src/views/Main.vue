@@ -18,7 +18,7 @@
         <v-btn @click="compressDialog = true" class="mt-4" color="success">Compress!</v-btn>
       </v-col>
     </v-row>
-    
+
     <Images class="transition" />
 
     <v-dialog persistent v-model="clearDialog" style="background-color: #0c233e;" max-width="500">
@@ -26,7 +26,15 @@
     </v-dialog>
 
     <v-dialog persistent v-model="compressDialog" style="background-color: #ffff;" max-width="800">
-      <Compress @closeDialog="compressDialog = false" />
+      <Compress
+        @updateProgress="updateProgress"
+        @openProgress="progressDialog = true"
+        @closeDialog="compressDialog = false"
+      />
+    </v-dialog>
+
+    <v-dialog persistent v-model="progressDialog" style="background-color: #ffff;" max-width="400">
+      <Progress v-bind:finished="finished" @closeDialog="closeProgress" />
     </v-dialog>
   </v-container>
 </template>
@@ -36,25 +44,49 @@ import Upload from "../components/Upload";
 import Images from "../components/Images";
 import ClearDialog from "../components/ClearDialog";
 import Compress from "../components/Compress";
+import Progress from "../components/Progress";
 
 export default {
   data() {
     return {
       clearDialog: false,
-      compressDialog: false
+      compressDialog: false,
+      progressDialog: false,
+      finished: {
+        message: "Exporting your files",
+        button: false
+      }
     };
   },
   components: {
     Upload,
     Images,
     ClearDialog,
-    Compress
+    Compress,
+    Progress
   },
   mounted() {},
   methods: {
     clearImages: function() {
       this.$store.commit("clearAll");
+      const { remote } = require("electron");
+      var win = remote.getCurrentWindow();
+      win.webContents.reloadIgnoringCache();
+
       this.clearDialog = false;
+    },
+    updateProgress() {
+      this.finished.message =
+        "Files succesfully exported!";
+      this.finished.button = true;
+    },
+    closeProgress() {
+      this.compressDialog = false;
+      this.progressDialog = false;
+      this.finished = {
+        message: "Exporting your files",
+        button: false
+      };
     }
   }
 };
