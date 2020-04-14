@@ -85,9 +85,14 @@ export default {
                 var reader = new FileReader();
                 reader.readAsArrayBuffer(result);
                 reader.onload = function() {
+                  var s = image.name;
+                  var fileName =
+                    s.substring(0, s.lastIndexOf(".")) +
+                    "_compressed" +
+                    s.substring(s.lastIndexOf("."));
                   var buffer = new Buffer(reader.result);
                   fs.writeFile(
-                    exportPath + "\\" + image.name,
+                    exportPath + "\\" + fileName,
                     buffer,
                     {},
                     err => {
@@ -109,7 +114,7 @@ export default {
                 console.log(err.message);
               }
             });
-          }, 200*index);
+          }, 200 * index);
         });
       }
     }
