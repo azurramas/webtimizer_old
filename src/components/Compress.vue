@@ -25,6 +25,18 @@
             tick-size="3"
           ></v-slider>
         </v-col>
+        <v-col cols="11">
+          <v-row class="justify-center">
+            <v-col cols="8">
+              <v-text-field v-model="width" min="0" class="input" type="number" label="Width"></v-text-field>
+            </v-col>
+            
+          </v-row>
+          <v-subheader>
+            *If not specified, the natural width of the original image will be used. The height will be computed automatically by the natural aspect ratio.
+          </v-subheader>
+          <v-subheader>**The compression ratio does not affect PNG files, the only way to compress them is to adjust the width to be smaller than the original image.</v-subheader>
+        </v-col>
       </v-row>
     </v-container>
     <v-card-actions>
@@ -44,7 +56,8 @@ export default {
       exportPath: "",
       compressionRatio: 0.5,
       inputErr: false,
-      inputErrMsg: ""
+      inputErrMsg: "",
+      width: ""
     };
   },
   methods: {
@@ -75,12 +88,14 @@ export default {
         let length = this.images.length;
         let i = 1;
         let main = this;
+        let width = this.width
 
         this.images.forEach((image, index) => {
           setTimeout(() => {
             new Compressor(image, {
               quality: quality,
               maxWidth: 1920,
+              width: width,
               success(result) {
                 var reader = new FileReader();
                 reader.readAsArrayBuffer(result);
@@ -88,7 +103,7 @@ export default {
                   var s = image.name;
                   var fileName =
                     s.substring(0, s.lastIndexOf(".")) +
-                    "_compressed" +
+                    "_compressed" + width +
                     s.substring(s.lastIndexOf("."));
                   var buffer = new Buffer(reader.result);
                   fs.writeFile(
@@ -126,3 +141,19 @@ export default {
   }
 };
 </script>
+
+<style>
+.v-input
+  .v-input__control
+  .v-input__slot
+  .v-text-field__slot
+  input::-webkit-outer-spin-button,
+.v-input
+  .v-input__control
+  .v-input__slot
+  .v-text-field__slot
+  input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+</style>
